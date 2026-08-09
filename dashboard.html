@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Intervue · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#F4F4F3; --surface:#FFFFFF; --surface-2:#ECECEA;
+  --text:#141414; --muted:#6B6B68; --line:#E0E0DD;
+  --accent:#D99A2B; --accent-soft:#F8F0DE;
+  --danger:#C75146; --danger-soft:#F8E6E3;
+  --r:14px; --r-lg:18px;
+  --display:"Bricolage Grotesque",sans-serif;
+  --body:"Work Sans",sans-serif;
+}
+html[data-theme="dark"]{
+  --bg:#0E0E10; --surface:#171719; --surface-2:#1F1F22;
+  --text:#F5F5F4; --muted:#9B9B98; --line:#2A2A2D;
+  --accent:#D99A2B; --accent-soft:#2C2413;
+  --danger:#E0716A; --danger-soft:#331815;
+  color-scheme:dark;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:var(--body); background:var(--bg); color:var(--text);
+  min-height:100vh; transition:background .35s,color .35s;
+}
+::selection{background:var(--text);color:var(--bg)}
+h1,h2,h3,.display{font-family:var(--display)}
+button{font-family:var(--body)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--text);outline-offset:2px;border-radius:6px}
+
+/* ============ TOPBAR ============ */
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 28px;background:var(--bg);
+  border-bottom:1px solid var(--line);
+  transition:background .35s;
+}
+.logo{display:flex;align-items:center;gap:11px}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;background:var(--text);
+  color:var(--bg);display:grid;place-items:center;
+  font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-.5px;
+}
+.logo-name{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.3px}
+
+.top-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.ai-pill{
+  display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;
+  background:var(--surface);border:1px solid var(--line);color:var(--text);
+  padding:7px 13px;border-radius:30px;white-space:nowrap;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--text);position:relative}
+.dot::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--text);opacity:0;animation:ping 2s infinite}
+@keyframes ping{0%{transform:scale(.5);opacity:.6}80%,100%{transform:scale(1.4);opacity:0}}
+.icon-btn{
+  width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface);color:var(--text);cursor:pointer;
+  display:grid;place-items:center;transition:border-color .2s;flex-shrink:0;
+}
+.icon-btn:hover{border-color:var(--text)}
+.icon-btn svg{width:17px;height:17px}
+html[data-theme="light"] .icon-moon{display:none}
+html[data-theme="dark"] .icon-sun{display:none}
+.avatar{
+  width:38px;height:38px;border-radius:50%;background:var(--text);color:var(--bg);
+  display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:14px;
+  cursor:pointer;flex-shrink:0;
+}
+
+/* ============ CONTENT ============ */
+.content{max-width:1040px;width:100%;margin:0 auto;padding:32px 24px 60px;display:flex;flex-direction:column;gap:22px}
+
+.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.welcome h1{font-size:clamp(26px,3.4vw,36px);font-weight:750;letter-spacing:-.8px;line-height:1.1}
+.welcome .sub{color:var(--muted);font-size:14.5px;margin-top:7px}
+.session-chip{
+  display:inline-flex;align-items:center;gap:7px;margin-top:13px;
+  font-size:12.5px;font-weight:600;background:var(--surface);
+  border:1px solid var(--line);padding:7px 14px;border-radius:30px;color:var(--muted);
+}
+.session-chip b{color:var(--text)}
+.welcome-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+.btn{
+  display:inline-flex;align-items:center;gap:9px;border:1px solid transparent;
+  padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;
+  cursor:pointer;transition:all .2s;
+}
+.btn svg{width:16px;height:16px}
+.btn-primary{background:var(--text);color:var(--bg)}
+.btn-primary:hover:not(:disabled){opacity:.85}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--text)}
+.btn.pulse{animation:pulse .5s}
+@keyframes pulse{50%{transform:scale(1.05)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:20px 24px;transition:background .35s;
+}
+.stat .lbl{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.stat .num{font-family:var(--display);font-size:38px;font-weight:750;letter-spacing:-1px;margin:10px 0 4px}
+.stat .trend{font-size:12.5px;font-weight:600;color:var(--muted)}
+
+/* cards */
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);
+  padding:24px;transition:background .35s;
+}
+.card-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.card-head h2{font-size:19px;font-weight:700;letter-spacing:-.4px}
+.card-head .hint{font-size:13px;color:var(--muted)}
+.card-sub{font-size:13.5px;color:var(--muted);margin-bottom:18px}
+
+.layout-2{display:grid;grid-template-columns:1.08fr .92fr;gap:16px;align-items:start}
+
+/* role picker */
+.role-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.role{
+  position:relative;border:1.5px solid var(--line);border-radius:var(--r);
+  padding:16px;cursor:pointer;background:var(--surface);transition:all .2s;
+}
+.role:hover{border-color:var(--muted)}
+.role.selected{border-color:var(--text);background:var(--surface-2)}
+.role.flash{animation:flash .9s}
+@keyframes flash{0%,100%{outline:none}30%{outline:2px solid var(--accent);outline-offset:2px}}
+.role .mono{
+  width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  font-family:var(--display);font-weight:700;font-size:13px;margin-bottom:11px;
+  background:var(--surface-2);color:var(--text);
+}
+.role.selected .mono{background:var(--surface)}
+.role h3{font-size:14.5px;font-weight:600;margin-bottom:3px}
+.role .skills-line{font-size:12px;color:var(--muted)}
+.role .check{
+  position:absolute;top:13px;right:13px;width:20px;height:20px;border-radius:50%;
+  border:1.5px solid var(--line);display:grid;place-items:center;transition:all .2s;
+}
+.role .check svg{width:11px;height:11px;stroke:var(--bg);opacity:0;transform:scale(.4);transition:all .2s}
+.role.selected .check{background:var(--text);border-color:var(--text)}
+.role.selected .check svg{opacity:1;transform:scale(1)}
+
+/* JD panel */
+.field-label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:8px;color:var(--muted)}
+.field-label .count{font-weight:500}
+.field-label .count.hot{color:var(--accent)}
+textarea{
+  width:100%;min-height:130px;resize:vertical;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--surface-2);color:var(--text);
+  padding:13px 15px;font:inherit;font-size:13.5px;line-height:1.55;transition:border-color .2s;
+}
+textarea:focus{outline:0;border-color:var(--text)}
+textarea::placeholder{color:var(--muted)}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+.chip{
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  padding:6px 13px;border-radius:30px;font-size:12.5px;font-weight:500;
+  cursor:pointer;transition:all .18s;
+}
+.chip:hover{border-color:var(--text);color:var(--text)}
+.chip.on{background:var(--text);border-color:var(--text);color:var(--bg)}
+
+.controls-row{display:flex;gap:22px;flex-wrap:wrap;margin:20px 0}
+.ctrl-label{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.segment{display:inline-flex;background:var(--surface-2);border-radius:11px;padding:3px;gap:2px}
+.segment button{
+  border:0;background:transparent;padding:7px 16px;border-radius:9px;
+  font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.segment button.active{background:var(--surface);color:var(--text)}
+.pills{display:flex;gap:8px}
+.pill{
+  min-width:44px;padding:7px 12px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);
+  cursor:pointer;transition:all .18s;
+}
+.pill.active{border-color:var(--text);color:var(--text);background:var(--surface-2)}
+
+.summary{
+  font-size:13px;color:var(--muted);background:var(--surface-2);
+  border-radius:11px;padding:11px 15px;margin-bottom:18px;line-height:1.5;
+}
+.summary b{color:var(--text)}
+.panel-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* recent + skills */
+.row-item{
+  display:flex;align-items:center;gap:14px;padding:13px 10px;border-radius:12px;
+  cursor:pointer;transition:background .2s;
+}
+.row-item + .row-item{border-top:1px solid var(--line)}
+.row-item:hover{background:var(--surface-2)}
+.row-item:hover .arrow{transform:translateX(4px)}
+.row-info{flex:1;min-width:0}
+.row-info h4{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-info span{font-size:12px;color:var(--muted)}
+.score{font-family:var(--display);font-weight:700;font-size:13px;padding:5px 12px;border-radius:30px;flex-shrink:0}
+.s-good{background:var(--text);color:var(--bg)}
+.s-mid{background:var(--accent-soft);color:var(--accent)}
+.s-low{background:var(--danger-soft);color:var(--danger)}
+.arrow{color:var(--muted);transition:transform .2s;flex-shrink:0}
+.arrow svg{width:15px;height:15px;display:block}
+
+.skill-row{margin-bottom:17px}
+.skill-row:last-child{margin-bottom:0}
+.skill-top{display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:8px}
+.skill-top span{color:var(--muted);font-weight:500}
+.bar{height:8px;background:var(--surface-2);border-radius:20px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;border-radius:20px;background:var(--text);transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* toast */
+.toast{
+  position:fixed;bottom:26px;left:50%;transform:translate(-50%,80px);
+  background:var(--text);color:var(--bg);padding:12px 22px;border-radius:12px;
+  font-size:13.5px;font-weight:600;
+  opacity:0;transition:all .35s cubic-bezier(.2,.8,.3,1);z-index:99;max-width:90vw;text-align:center;
+}
+.toast.show{transform:translate(-50%,0);opacity:1}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:900px){
+  .layout-2{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .topbar{padding:12px 16px}
+  .content{padding:24px 16px 50px}
+  .ai-pill span{display:none}
+  .ai-pill{padding:9px 11px}
+  .welcome-actions{width:100%}
+  .welcome-actions .btn{flex:1;justify-content:center}
+}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr}
+}
+@media (max-width:440px){
+  .role-grid{grid-template-columns:1fr}
+  .card{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="logo">
+    <div class="logo-mark">iv</div>
+    <div class="logo-name">Intervue</div>
+  </div>
+
+  <div class="top-right">
+    <div class="ai-pill"><span class="dot"></span><span>AI ready</span></div>
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8"/></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.5A8 8 0 0 1 10.5 4 8 8 0 1 0 20 13.5z"/></svg>
+    </button>
+    <div class="avatar" title="Alex R.">AR</div>
+  </div>
+</header>
+
+<main class="content">
+
+  <!-- WELCOME -->
+  <section class="welcome reveal">
+    <div>
+      <h1 id="greeting">Good day, Alex</h1>
+      <p class="sub" id="dateLine">Ready to sharpen your answers?</p>
+      <span class="session-chip">Last session · Frontend Developer · <b>Score 82</b> · yesterday</span>
+    </div>
+    <div class="welcome-actions">
+      <button class="btn btn-primary" id="startBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5.5v13l11-6.5z"/></svg>
+        Start mock interview
+      </button>
+      <button class="btn btn-ghost" id="browseBtn">Browse roles</button>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats reveal">
+    <div class="stat">
+      <div class="lbl">Mocks completed</div>
+      <div class="num" data-count="24">0</div>
+      <div class="trend">▲ 12% this week</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">Average score</div>
+      <div class="num" data-count="76">0</div>
+      <div class="trend">▲ +4 vs last month</div>
+    </div>
+  </section>
+
+  <!-- SETUP: ROLE + JD -->
+  <section class="layout-2">
+
+    <div class="card reveal" id="roleCard">
+      <div class="card-head">
+        <h2>Choose your role</h2>
+        <span class="hint">Pick one to tailor questions</span>
+      </div>
+      <p class="card-sub">The AI adapts difficulty and topics to the role you select.</p>
+
+      <div class="role-grid" id="roleGrid">
+        <div class="role" data-role="Frontend Developer">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">FE</div>
+          <h3>Frontend Developer</h3>
+          <div class="skills-line">React · JS · CSS</div>
+        </div>
+        <div class="role" data-role="Backend Engineer">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">BE</div>
+          <h3>Backend Engineer</h3>
+          <div class="skills-line">APIs · DB · Node</div>
+        </div>
+        <div class="role" data-role="Data Scientist">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">DS</div>
+          <h3>Data Scientist</h3>
+          <div class="skills-line">Python · ML · Stats</div>
+        </div>
+        <div class="role" data-role="DevOps Engineer">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">DO</div>
+          <h3>DevOps Engineer</h3>
+          <div class="skills-line">CI/CD · Cloud · K8s</div>
+        </div>
+        <div class="role" data-role="UI/UX Designer">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">UI</div>
+          <h3>UI/UX Designer</h3>
+          <div class="skills-line">Figma · Research</div>
+        </div>
+        <div class="role" data-role="Product Manager">
+          <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          <div class="mono">PM</div>
+          <h3>Product Manager</h3>
+          <div class="skills-line">Strategy · Metrics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head">
+        <h2>Job description</h2>
+        <span class="hint">Optional but recommended</span>
+      </div>
+      <p class="card-sub">Paste a real JD — questions will match its requirements.</p>
+
+      <div class="field-label"><span>Job description</span><span class="count" id="charCount">0 / 3000</span></div>
+      <textarea id="jdText" maxlength="3000" placeholder="Paste the job description here, or describe the role you're preparing for… e.g. “Senior React developer, 4+ years, system design focus”"></textarea>
+
+      <div class="field-label" style="margin-top:16px"><span>Focus areas</span><span class="count">up to 4</span></div>
+      <div class="chips" id="chips">
+        <button class="chip">JavaScript</button>
+        <button class="chip">React</button>
+        <button class="chip">System Design</button>
+        <button class="chip">SQL</button>
+        <button class="chip">Python</button>
+        <button class="chip">DSA</button>
+        <button class="chip">Communication</button>
+        <button class="chip">Leadership</button>
+      </div>
+
+      <div class="controls-row">
+        <div>
+          <div class="ctrl-label">Difficulty</div>
+          <div class="segment" id="diffSeg">
+            <button>Easy</button>
+            <button class="active">Medium</button>
+            <button>Hard</button>
+          </div>
+        </div>
+        <div>
+          <div class="ctrl-label">Questions</div>
+          <div class="pills" id="qPills">
+            <button class="pill">5</button>
+            <button class="pill active">10</button>
+            <button class="pill">15</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary" id="summary">No role selected yet — pick one on the left to begin.</div>
+
+      <div class="panel-actions">
+        <button class="btn btn-primary" id="generateBtn" disabled>
+          Generate interview
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button class="btn btn-ghost" id="draftBtn">Save draft</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT + SKILLS -->
+  <section class="layout-2">
+    <div class="card reveal">
+      <div class="card-head">
+        <h2>Recent interviews</h2>
+        <a href="#" class="hint" style="font-weight:600;text-decoration:underline;text-underline-offset:3px">View all →</a>
+      </div>
+      <div style="margin-top:10px">
+        <div class="row-item">
+          <div class="row-info"><h4>Frontend Developer</h4><span>Yesterday · 10 questions</span></div>
+          <span class="score s-good">82</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <div class="row-item">
+          <div class="row-info"><h4>System Design Round</h4><span>Monday · 6 questions</span></div>
+          <span class="score s-mid">71</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <div class="row-item">
+          <div class="row-info"><h4>Behavioral · STAR format</h4><span>Last week · 8 questions</span></div>
+          <span class="score s-low">58</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+        <div class="row-item">
+          <div class="row-info"><h4>Backend Engineer</h4><span>Last week · 10 questions</span></div>
+          <span class="score s-good">88</span>
+          <span class="arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><h2>Skills overview</h2><span class="hint">AI-scored average</span></div>
+      <div style="margin-top:18px">
+        <div class="skill-row">
+          <div class="skill-top">Communication <span>82%</span></div>
+          <div class="bar"><span data-w="82"></span></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top">Problem solving <span>74%</span></div>
+          <div class="bar"><span data-w="74"></span></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top">Technical depth <span>68%</span></div>
+          <div class="bar"><span data-w="68"></span></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-top">Confidence <span>61%</span></div>
+          <div class="bar"><span data-w="61"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- theme ---------- */
+const root = document.documentElement;
+const savedTheme = localStorage.getItem('iv-theme');
+if (savedTheme) root.dataset.theme = savedTheme;
+else if (matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('iv-theme', root.dataset.theme);
+});
+
+/* ---------- greeting + date ---------- */
+const h = new Date().getHours();
+const part = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+document.getElementById('greeting').textContent = `${part}, Alex`;
+document.getElementById('dateLine').textContent =
+  new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'}) + ' — ready to practice?';
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ---------- state ---------- */
+const state = { role:null, difficulty:'Medium', questions:10, focus:[] };
+const genBtn = document.getElementById('generateBtn');
+const summary = document.getElementById('summary');
+
+function updateSummary(){
+  if (!state.role){
+    summary.innerHTML = 'No role selected yet — pick one on the left to begin.';
+    genBtn.disabled = true; return;
+  }
+  const focus = state.focus.length ? state.focus.join(', ') : '—';
+  summary.innerHTML = `<b>${state.role}</b> · ${state.difficulty} · ${state.questions} questions · Focus: ${focus}`;
+  genBtn.disabled = false;
+}
+
+/* ---------- role select ---------- */
+document.querySelectorAll('.role').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.role').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.role = card.dataset.role;
+    updateSummary();
+    toast('Role selected: ' + state.role);
+  });
+});
+
+/* ---------- chips ---------- */
+document.querySelectorAll('#chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const on = chip.classList.contains('on');
+    if (!on && state.focus.length >= 4){ toast('Maximum 4 focus areas'); return; }
+    chip.classList.toggle('on');
+    state.focus = on ? state.focus.filter(f => f !== chip.textContent)
+                     : [...state.focus, chip.textContent];
+    updateSummary();
+  });
+});
+
+/* ---------- difficulty segment ---------- */
+document.querySelectorAll('#diffSeg button').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#diffSeg button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); state.difficulty = b.textContent; updateSummary();
+  });
+});
+
+/* ---------- question pills ---------- */
+document.querySelectorAll('#qPills .pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('#qPills .pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active'); state.questions = +p.textContent; updateSummary();
+  });
+});
+
+/* ---------- textarea counter ---------- */
+const jd = document.getElementById('jdText'), count = document.getElementById('charCount');
+jd.addEventListener('input', () => {
+  count.textContent = `${jd.value.length} / 3000`;
+  count.classList.toggle('hot', jd.value.length > 2600);
+});
+
+/* ---------- actions ---------- */
+function launch(){
+  if (!state.role){
+    toast('Pick a role first 👇');
+    document.getElementById('roleCard').scrollIntoView({behavior:'smooth', block:'center'});
+    document.getElementById('roleGrid').classList.add('flash');
+    setTimeout(() => document.getElementById('roleGrid').classList.remove('flash'), 900);
+    return;
+  }
+  genBtn.classList.add('pulse');
+  setTimeout(() => genBtn.classList.remove('pulse'), 500);
+  toast(`Setting up your ${state.role} interview…`);
+  // → hook your chatbot route here, e.g. window.location = '/chat'
+}
+genBtn.addEventListener('click', launch);
+document.getElementById('startBtn').addEventListener('click', launch);
+document.getElementById('browseBtn').addEventListener('click', () =>
+  document.getElementById('roleCard').scrollIntoView({behavior:'smooth', block:'center'}));
+document.getElementById('draftBtn').addEventListener('click', () => toast('Draft saved ✓'));
+
+/* ---------- scroll reveal + counters + bars ---------- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count]').forEach(animateCount);
+    e.target.querySelectorAll('.bar span').forEach(b => b.style.width = b.dataset.w + '%');
+    io.unobserve(e.target);
+  });
+}, {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+function animateCount(el){
+  const target = +el.dataset.count, dur = 900, t0 = performance.now();
+  (function step(t){
+    const p = Math.min((t - t0) / dur, 1);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+</script>
+</body>
+</html>
