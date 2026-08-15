@@ -56,7 +56,7 @@ export async function getInterview(req: Request, res: Response) {
   try {
     const interview = await prisma.interview.findFirst({
       where: {
-        id: req.params.id,
+        id: Array.isArray(req.params.id) ? req.params.id[0] : req.params.id,
         userId: req.user!.userId, // ownership check
       },
       include: {
@@ -80,8 +80,8 @@ export async function finishInterview(req: Request, res: Response) {
  
     const interview = await prisma.interview.findFirst({
       where: {
-        id: req.params.id,
         userId: req.user!.userId, // ownership check
+        id: req.params.id,
       },
       include: {
         messages: { orderBy: { createdAt: "asc" } },
