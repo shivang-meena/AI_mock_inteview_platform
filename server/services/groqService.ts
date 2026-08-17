@@ -1,7 +1,7 @@
 import { Interview, Message } from "../generated/prisma/client";
 import groq from "../config/groq"; // Import your pre-configured Groq client
 
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "openai/gpt-oss-120b";
 
 export interface InterviewSummaryResult {
   overallScore: number;

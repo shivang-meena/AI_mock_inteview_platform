@@ -77,13 +77,13 @@ export async function getStats(req: Request, res: Response) {
       }),
       prisma.interview.findMany({
         where: {
-          userId: userId, // Replace 'userId' with the actual logged-in user's ID
-           status: "COMPLETED", // Uncomment this line if you ONLY want to show finished interviews
+          userId: userId, 
+           status: "COMPLETED", 
         },
         orderBy: {
-          createdAt: "desc", // Sorts by newest first (Most Recent)
+          createdAt: "desc",
         },
-        take: 4, // This sets the MAXIMUM limit to 4.
+        take: 4, 
       })
     ]);
 
