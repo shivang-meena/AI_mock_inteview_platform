@@ -1,0 +1,89 @@
+@import "tailwindcss";
+/* 
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+} */
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+   :root {
+    --body: "Work Sans", sans-serif;
+    --bg: #0f0f0e;
+    --text: #1C1917; /* Use a dark color if this is your text */
+  }
+
+  body {
+    @apply min-h-screen;
+    font-family: var(--body);
+    
+    color: var(--text);
+   
+  }
+}
+
+
+/* yaha se chalu hua hai system ok  */
+@theme {
+  /* Define a specific font family just for the chat */
+  --font-chat: var(--font-inter), system-ui, sans-serif;
+
+  /* Colors */
+  --color-chat-bg: #0D0F14;
+  --color-chat-surface: #171A21;
+  --color-chat-bubble: #232833;
+  --color-chat-border: #262B36;
+  --color-chat-accent: #E8A33D;
+  --color-chat-text: #ECEAE3;
+  --color-chat-muted: #8A90A0;
+  --color-chat-dim: #5C6270;
+  --color-chat-error: #E5484D;
+
+  /* Animations */
+  --animate-fade-up: fade-up 0.35s ease-out;
+  --animate-breathe: breathe 1.4s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.2); }
+}
+
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-chat-border) transparent;
+
+  &::-webkit-scrollbar { width: 8px; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-chat-border);
+    border-radius: 8px;
+  }
+}
