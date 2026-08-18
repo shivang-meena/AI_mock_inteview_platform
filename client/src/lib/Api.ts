@@ -1,4 +1,4 @@
-const API_URL = process.env.git  || "https://ai-mock-inteview-platform.onrender.com";
+const API_URL = process.env.git  || "http://localhost:5000";
 
 interface ApiOptions {
   method?: string;
