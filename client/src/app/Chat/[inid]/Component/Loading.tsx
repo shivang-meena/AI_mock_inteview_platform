@@ -22,10 +22,10 @@ export default function LoadingSpinner({ dark, label = "Loading..." }: LoadingSp
     count++;
 
     if (count === 1) {
-   setlabelin("Messegest received ");
+   setlabelin("Request received ");
     } 
     else if (count === 2) {
-     setlabelin("Dispalying Messeages");
+     setlabelin("Displaying Messeages");
     } 
     else if (count === 3) {
       setlabelin("almost ready");

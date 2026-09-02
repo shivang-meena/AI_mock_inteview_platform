@@ -10,15 +10,26 @@ type RoleAndJDSectionprops={
 // components/RoleAndJDSection.jsx
 export default function RoleAndJDSection({ dark = false,token }:RoleAndJDSectionprops) {
   const router=useRouter();
-  const roles = [
-    { code: "FE", role: "Frontend Developer", skills: "React · JS · CSS" },
-    { code: "BE", role: "Backend Engineer", skills: "APIs · DB · Node" },
-    { code: "DS", role: "Data Scientist", skills: "Python · ML · Stats" },
-    { code: "DO", role: "DevOps Engineer", skills: "CI/CD · Cloud · K8s" },
-    { code: "UI", role: "UI/UX Designer", skills: "Figma · Research" },
-    { code: "PM", role: "Product Manager", skills: "Strategy · Metrics" },
-  ];
-
+  // const roles = [
+  //   { code: "FE", role: "Frontend Developer", skills: "React · JS · CSS" },
+  //   { code: "BE", role: "Backend Engineer", skills: "APIs · DB · Node" },
+  //   { code: "DS", role: "Data Scientist", skills: "Python · ML · Stats" },
+  //   { code: "DO", role: "DevOps Engineer", skills: "CI/CD · Cloud · K8s" },
+  //   { code: "UI", role: "UI/UX Designer", skills: "Figma · Research" },
+  //   { code: "PM", role: "Product Manager", skills: "Strategy · Metrics" },
+  // ];
+ const roles = [
+  { code: "FE", role: "Frontend Developer", skills: "React · JS · CSS" },
+  { code: "BE", role: "Backend Engineer", skills: "APIs · DB · Node" },
+  { code: "DS", role: "Data Scientist", skills: "Python · ML · Stats" },
+  { code: "DO", role: "DevOps Engineer", skills: "CI/CD · Cloud · K8s" },
+  { code: "UI", role: "UI/UX Designer", skills: "Figma · Research" },
+  { code: "PM", role: "Product Manager", skills: "Strategy · Metrics" },
+  { code: "HR", role: "HR Manager", skills: "Recruitment · People · HR" },
+  { code: "GAI", role: "Generative AI Developer", skills: "LLMs · RAG · AI Agents" },
+  { code: "MLE", role: "AI/ML Engineer", skills: "Python · ML · Deep Learning" },
+  { code: "FS", role: "Full Stack Developer", skills: "React · Node · DB" },
+];
   const chips = [
     "JavaScript",
     "React",
@@ -54,7 +65,7 @@ router.push(`/Chat/${interview.id}`);
     );
   }
   return (
-    <section className="grid grid-cols-[1.08fr_.92fr] max-[900px]:grid-cols-1 gap-4 items-start">
+    <section id="roleinterviewsection" className="grid grid-cols-[1.08fr_.92fr] max-[900px]:grid-cols-1 gap-4 items-start">
       {/* ROLE CARD */}
       <div className={`${surface} border ${line} rounded-[18px] p-6 transition-colors duration-300`}>
         <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1.5">

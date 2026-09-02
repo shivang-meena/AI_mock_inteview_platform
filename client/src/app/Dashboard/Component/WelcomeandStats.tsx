@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface WelcomeStatsProps {
   dark?: boolean;
   lastSession: {
@@ -9,13 +11,15 @@ interface WelcomeStatsProps {
   averageScoreThisWeek:number;
   averageScoreOverall:number;
   averageScoreThisMonth:number
+  username:string
 }
 
 export default function WelcomeStats({ dark = false,
    lastSession, mocksCompletedOverall,
   averageScoreThisWeek,
   averageScoreOverall,
-  averageScoreThisMonth
+  averageScoreThisMonth,
+  username
  }: WelcomeStatsProps) {
   const bg = dark ? 'bg-[#0E0E10]' : 'bg-[#F4F4F3]';
   const surface = dark ? 'bg-[#171719]' : 'bg-white';
@@ -108,18 +112,19 @@ export default function WelcomeStats({ dark = false,
       <section className={`flex items-end justify-between gap-5 flex-wrap transition-colors duration-[350ms] ${bg} ${text}`}>
         <div>
           <h1 className="text-[clamp(26px,3.4vw,36px)] font-[750] tracking-[-0.8px] leading-[1.1] font-['Bricolage_Grotesque']">
-            Good day, Alex
+            Good day {username}
           </h1>
           <p className={`${muted} text-[14.5px] mt-[7px]`}>{nowdate} {part} Ready to sharpen your answers?</p>
           {lastSession &&
             (<span className={`inline-flex items-center gap-[7px] mt-[13px] text-[12.5px] font-semibold ${surface} border ${line} py-[7px] px-[14px] rounded-[30px] ${muted}`}>
-              Last session · {lastSession?.role} · <b className={text}>Score {lastSession?.overallScore}</b> · {getFinishedLabel(lastSession.finishedAt)}
+              Last session · {lastSession?.role} · <b className={text}>Score {(lastSession?.overallScore)?lastSession?.overallScore:0}</b> · {getFinishedLabel(lastSession.finishedAt)}
             </span>)
             
           }
         </div>
 
         <div className="flex gap-2.5 flex-wrap max-[720px]:w-full">
+          <Link href="#roleinterviewsection" >
           <button className={`inline-flex items-center gap-[9px] border ${line} py-3 px-5 rounded-xl text-sm font-semibold cursor-pointer transition-all ${surface} ${text} hover:border-current max-[720px]:flex-1 max-[720px]:justify-center`}>
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
               <path d="M7 5.5v13l11-6.5z" />
@@ -129,6 +134,7 @@ export default function WelcomeStats({ dark = false,
           <button className={`inline-flex items-center gap-[9px] border ${line} py-3 px-5 rounded-xl text-sm font-semibold cursor-pointer transition-all ${surface} ${text} hover:border-current max-[720px]:flex-1 max-[720px]:justify-center`}>
             Browse roles
           </button>
+          </Link>
         </div>
       </section>
 
@@ -139,12 +145,12 @@ export default function WelcomeStats({ dark = false,
             Mocks completed
           </div>
           <div className={`font-['Bricolage_Grotesque'] text-[38px] font-[750] tracking-[-1px] my-[10px] mb-1 ${text}`}>
-            {mocksCompletedOverall}
+            {(mocksCompletedOverall)?mocksCompletedOverall:0}
           </div>
           <div className={`text-[12.5px] font-semibold ${muted}`}>
             {/* ▲ 12% */}
             {(averageScoreThisWeek>0)?<>📈</>:<>📉</>} {" "}
-            {averageScoreThisWeek}%
+            {(averageScoreThisWeek)?averageScoreThisWeek:0}%
             this week
           </div>
         </div>
@@ -159,7 +165,7 @@ export default function WelcomeStats({ dark = false,
           <div className={`text-[12.5px] font-semibold ${muted}`}>
             
             {(averageScoreThisMonth>0)?<>📈</>:<>📉</>} {" "}
-            {averageScoreThisMonth}% 
+            {averageScoreThisMonth||0}% 
             this month
           </div>
         </div>

@@ -33,6 +33,18 @@ async function handleLogout() {
   router.push("/sign-in");
   router.refresh(); 
 }
+
+function DevHireLogo({ darklogo }: { darklogo: boolean }) {
+  const accent = darklogo ? '#E8A33D' : '#B8720A';
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={accent}
+      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="8 7 4 12 8 17" />
+      <polyline points="16 7 20 12 16 17" />
+      <polyline points="10.2 12.3 11.4 13.6 13.8 10.6" />
+    </svg>
+  );
+}
   // close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -47,23 +59,10 @@ async function handleLogout() {
   return (
     <header className={` ${bricolage.className} sticky    top-0 z-30 flex items-center gap-[14px] py-3.5 px-7 max-[720px]:py-3 max-[720px]:px-4 border-b transition-colors duration-300 ${bg} ${line}`}>
       <div className="flex items-center gap-[11px]">
-        <div className={`w-9 h-9 rounded-[10px] grid pt-1 place-items-center ${markBg}`}>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-6 h-6">
-            <defs>
-              <linearGradient id="waveGrad" x1="86" y1="96" x2="426" y2="430" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#10B981"/>
-                <stop offset="100%" stopColor="#0EA5E9"/>
-              </linearGradient>
-            </defs>
-            <path fill="url(#waveGrad)" d="M150 96 H362 A64 64 0 0 1 426 160 V292 A64 64 0 0 1 362 356 H0 L0 356 L150 356 A64 64 0 0 1 86 292 V160 A64 64 0 0 1 150 96 Z"/>
-            <g stroke="#FFFFFF" strokeWidth="22" strokeLinecap="round">
-              <line x1="176" y1="202" x2="176" y2="250"/>
-              <line x1="216" y1="178" x2="216" y2="274"/>
-              <line x1="256" y1="156" x2="256" y2="296"/>
-              <line x1="296" y1="178" x2="296" y2="274"/>
-              <line x1="336" y1="202" x2="336" y2="250"/>
-            </g>
-          </svg>
+        <div className={`rounded-[10px] w-9 h-9 flex items-center justify-center
+          flex-1 min-w-0 flex items-center gap-2 text-sm font-medium
+          ${markBg}`}>
+          {DevHireLogo(dark)}
         </div>
         <div className={`font-['Bricolage_Grotesque'] font-bold text-lg tracking-[-0.3px] ${text}`}>  Inteview Platform</div>
       </div>

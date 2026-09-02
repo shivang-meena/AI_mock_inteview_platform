@@ -10,9 +10,9 @@ type LoadingSpinnerProps = {
 
 export default function LoadingSpinner({ dark, label = "Loading..." }: LoadingSpinnerProps) {
        const[labelin,setlabelin]=useState(label||"loading...");
-       setInterval(() => {
-         setlabelin("dispaling data...");
-       }, 500);
+      //  setInterval(() => {
+      //    setlabelin("Arranging  Data...");
+      //  }, 500);
 
 
        useEffect(() => {
@@ -22,10 +22,10 @@ export default function LoadingSpinner({ dark, label = "Loading..." }: LoadingSp
     count++;
 
     if (count === 1) {
-   setlabelin("data received");
+   setlabelin("Data Received");
     } 
     else if (count === 2) {
-     setlabelin("dispaling data ");
+     setlabelin("Arranging  data ");
     } 
     else if (count === 3) {
       setlabelin("signing in...");

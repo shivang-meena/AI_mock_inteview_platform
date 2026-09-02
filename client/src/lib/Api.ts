@@ -1,4 +1,4 @@
-const API_URL = process.env.git  || " https://ai-mock-inteview-platform.onrender.com";
+const API_URL = process.env.git  || "http://localhost:5000";
 console.log(API_URL);
 
 interface ApiOptions {
@@ -19,6 +19,7 @@ async function apiFetch(path: string, { method = "GET", body, token }: ApiOption
 
   if (!res.ok) {
     const error = await res.json().catch((err) => ({ error: err }));
+    console.log(error);
     throw new Error(error.error || `Request failed with status ${res.status}`);
   }
 

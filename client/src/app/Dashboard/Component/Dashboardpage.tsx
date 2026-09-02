@@ -9,14 +9,18 @@ import { useApiToken } from "@/hooks/useApiToken";
 import { getDashboardStats } from "../../../lib/Api";
 import { useApiData } from "@/hooks/Useapidata";
 import Loading from "./Loading";
+import ServerError from "./ServerError";
+import { useSession } from "next-auth/react";
 
 
 function Dashboardpage() {
   const { dark, setdark } = useTheme();
+  const { data:session} = useSession();
+  //  const { data: session, status } = useSession();
   const token = useApiToken();
   //  const[dark,setdark]=useState<boolean>(false);
   const bg = dark ? 'bg-[#0E0E10]' : 'bg-[#F4F4F3]';
-
+console.log(session?.user?.name?.split(" ")[0]);
   const { data: stats, loading, error } = useApiData(
     () => getDashboardStats(token),
     [token],
@@ -29,7 +33,14 @@ function Dashboardpage() {
     ></Loading>
   </>;
 
-  if (error) return <p>Something went wrong: {error}</p>;
+  // if (error) return <p>Something went wrong: {error}</p>;
+  if (error) return (
+  <ServerError
+    dark={dark}
+    label={error}
+    onRetry={() => window.location.reload()}
+  />
+);
   if (!stats) return null;
 
 
@@ -44,6 +55,7 @@ function Dashboardpage() {
           averageScoreOverall={Number(stats.averageScoreOverall?._avg?.overallScore?.toFixed(2))}
           averageScoreThisMonth={Number(stats.averageScoreThisMonth?._avg?.overallScore?.toFixed(2))}
           dark={dark}
+          username={session?.user?.name?.split(" ")[0] ?? ""}
         ></WelcomeAndStats>
 
         <RoleAndJDSection
