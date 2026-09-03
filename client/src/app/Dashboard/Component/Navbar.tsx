@@ -62,7 +62,7 @@ function DevHireLogo({ darklogo }: { darklogo: boolean }) {
         <div className={`rounded-[10px] w-9 h-9 flex items-center justify-center
           flex-1 min-w-0 flex items-center gap-2 text-sm font-medium
           ${markBg}`}>
-          {DevHireLogo(dark)}
+          {DevHireLogo({ darklogo: dark })}
         </div>
         <div className={`font-['Bricolage_Grotesque'] font-bold text-lg tracking-[-0.3px] ${text}`}>  Inteview Platform</div>
       </div>
