@@ -169,7 +169,7 @@ export default function RecentAndSkills({ dark = false,
          <div className={`mt-[10px]   one more thigns divide-y ${line}`}>
   {recentInterviews && recentInterviews.length > 0 ? (
     recentInterviews.map((item, idx) => (
-     <> <Link href={`Chat/${item.id}`} key={item.id} >
+     <Link href={`Chat/${item.id}`} key={item.id} >
       <div
         
         className={`group flex items-center gap-[14px] py-[13px] px-[10px] rounded-xl cursor-pointer transition-colors duration-200 ${hoverBg}`}
@@ -202,7 +202,7 @@ export default function RecentAndSkills({ dark = false,
         </span>
       </div>
 
-      </Link> </>
+      </Link> 
     ))
   ) : (
     <div className="flex items-center gap-[14px] py-[13px] px-[10px]">
