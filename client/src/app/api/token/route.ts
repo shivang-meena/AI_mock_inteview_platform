@@ -31,14 +31,14 @@ export async function GET() {
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
   }
-  console.log(process.env.BACKEND_JWT_SECRET!);
+  
 
   const token = jwt.sign(
     { userId: session.user.id },
     process.env.API_JWT_SECRET!,
     { expiresIn: "7d" }
   );
-  console.log(session.user.id );
+
 
 
   return NextResponse.json({ token });

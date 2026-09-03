@@ -61,7 +61,7 @@ export default function Mainparent({inid}:{inid:string}) {
         !!token && !!inid // Only fetch if both exist
     );
     const [inteviewDetails,setInterviewDetails]=useState<Interview|null>(interview);
-    console.log(inteviewDetails);
+    
   
   useEffect(()=>{
       setInterviewDetails(interview);
@@ -76,7 +76,7 @@ export default function Mainparent({inid}:{inid:string}) {
   if (!inteviewDetails) {
     return <>some went wrong {inteviewDetails}</>
   }
-// console.log(typeof interview.status);
+
 const handleFinishInterview = async () => {
   if (finishing) return;
   setFinishing(true);

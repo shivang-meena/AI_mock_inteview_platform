@@ -97,7 +97,7 @@ export default function MainChatArea({ inteviewid, token, dark, setDark, meesage
 
 
   const [messages, setMessages] = useState<Message[]>(meesage);
-  console.log(messages);
+
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

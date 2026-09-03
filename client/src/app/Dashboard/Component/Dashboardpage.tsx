@@ -20,7 +20,7 @@ function Dashboardpage() {
   const token = useApiToken();
   //  const[dark,setdark]=useState<boolean>(false);
   const bg = dark ? 'bg-[#0E0E10]' : 'bg-[#F4F4F3]';
-console.log(session?.user?.name?.split(" ")[0]);
+
   const { data: stats, loading, error } = useApiData(
     () => getDashboardStats(token),
     [token],

@@ -126,7 +126,7 @@ function DevHireLogo({ darklogo }: { darklogo: boolean }) {
                 onClick={() => {
                   setProfileOpen(false);
                   handleLogout();
-                  console.log("logout clicked");
+                
                 }}
               >
                 <svg className="w-[16px] h-[16px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

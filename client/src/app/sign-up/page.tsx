@@ -100,8 +100,7 @@ setLoading(true);
            }
 
            const data = await res.json();
-           console.log("Success:", data);
-           // Handle success here (e.g., redirect user)
+          
 
 
           const signres=( await signIn("credentials",{

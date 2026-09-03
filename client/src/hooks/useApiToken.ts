@@ -17,7 +17,7 @@ export function useApiToken() {
       .then((res) => { return  res.json() })
       .then((data) => {
         setToken(data.token)
-        console.log(data.token);
+        
       })
       .catch((err) => {
         console.log(err);

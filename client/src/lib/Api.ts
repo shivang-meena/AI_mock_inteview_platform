@@ -1,5 +1,5 @@
 const API_URL = process.env.git  || "http://localhost:5000";
-console.log(API_URL);
+
 
 interface ApiOptions {
   method?: string;

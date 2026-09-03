@@ -36,7 +36,7 @@ export async function POST(request:Request) {
     }
 
   const hashedpass=await bcrypt.hash(body.password,10);
-  console.log(body.email);
+  
 const newuser=await prisma.user.create({
     data:{
         name:body.name,
@@ -50,7 +50,7 @@ const {password:_,...userwithoutpass}=newuser
 return NextResponse.json({succes:true,messege:"User regitered Succesfully",newuser:userwithoutpass},{status:201});
     } catch (err) {
     
-         console.error(err); // full error object + stack, printed in your terminal
+      
   return NextResponse.json(
     {
     succes:false,
