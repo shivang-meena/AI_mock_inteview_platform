@@ -61,6 +61,7 @@ export default function LoginPage() {
 
             if (res?.error) {
                 setLoading(false);
+              
                 setError(res.error);
                 return;
             }

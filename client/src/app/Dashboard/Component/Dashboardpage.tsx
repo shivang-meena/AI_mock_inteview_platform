@@ -1,6 +1,6 @@
 "use client"
 import Navbar from "./Navbar";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import WelcomeAndStats from "./WelcomeandStats";
 import RoleAndJDSection from "./RoleAndJdSection";
 import RecentAndSkillsSection from "./RecentAndSkillsSection";
@@ -13,9 +13,11 @@ import ServerError from "./ServerError";
 import { useSession } from "next-auth/react";
 
 
+
 function Dashboardpage() {
   const { dark, setdark } = useTheme();
   const { data:session} = useSession();
+  
   //  const { data: session, status } = useSession();
   const token = useApiToken();
   //  const[dark,setdark]=useState<boolean>(false);
@@ -26,6 +28,8 @@ function Dashboardpage() {
     [token],
     !!token
   );
+
+
   if (loading) return <>
     <Loading
     dark={dark}

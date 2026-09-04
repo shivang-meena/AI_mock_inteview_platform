@@ -1,5 +1,6 @@
 "use client"
-
+import { useEffect } from "react";
+import { useSession,signOut } from "next-auth/react";
 interface ServerErrorProps {
   dark: boolean;
   label?: string;
@@ -15,6 +16,7 @@ function ServerError({ dark, label = "We couldn't load your data right now.", on
   const iconBg = dark ? 'bg-[#2A1215]' : 'bg-red-50';
   const iconColor = dark ? 'text-red-400' : 'text-red-500';
   const btnBg = dark ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800';
+
 
   return (
     <div className={`${bg} min-h-screen w-full flex items-center justify-center transition-colors duration-[350ms] px-4`}>

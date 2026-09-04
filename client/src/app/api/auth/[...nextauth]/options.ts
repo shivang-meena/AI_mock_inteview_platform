@@ -86,14 +86,39 @@ export const authoptions: NextAuthOptions = {
     async jwt({ token, user }) {
         if (user) {
             token.id = user.id;
+            return token;
         }
+
+
+/////////////////////////////
+
+          if (token.id) {
+            const dbUser = await prisma.user.findUnique({
+                where: { id: token.id as string },
+            });
+            if (!dbUser) {
+                return {}; // wipes token.id → session becomes invalid downstream
+            }
+        }
+
         return token;
+//////////////////////////////////
+
+
     },
     async session({ session, token }) {
-        if (token) {
-            session.user.id = token.id as string;
+
+        if (!token?.id) {
+            // No confirmed DB user → tell the client there's no real session
+            return { ...session, user: undefined } as unknown as typeof session;
         }
+        session.user.id = token.id as string;
         return session;
+
+        // if (token) {
+        //     session.user.id = token.id as string;
+        // }
+        // return session;
     },
     },
     pages: {
