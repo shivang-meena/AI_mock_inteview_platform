@@ -8,7 +8,9 @@
     "dev": "tsx watch server.ts",
     "postinstall": "prisma generate",
     "build": "prisma generate && tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +24,8 @@
     "groq-sdk": "^1.5.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.1",
-    "pg": "^8.23.0"
+    "pg": "^8.23.0",
+    "vitest": "^4.1.11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",

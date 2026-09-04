@@ -10,7 +10,7 @@
   "include": [
     "**/*.ts",
     "types/**/*.d.ts"
-, "genratetoken.js"  ],
+, "genratetoken.js", "jest.config.js"  ],
   "exclude": [
     "node_modules",
     "dist"
